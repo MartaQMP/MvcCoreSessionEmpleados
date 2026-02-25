@@ -1,0 +1,23 @@
+﻿@section style {
+    <style>
+        a {
+            color: black;
+        }
+    </style>
+}
+@model List<Empleado>
+
+<h1>Session lista Empleados</h1>
+<hr />
+<a asp-controller="Empleado" asp-action="EmpleadosAlmacenados" class="btn btn-outline-dark">Mostrar empleados almacenados</a>
+<br />
+<h4>@ViewBag.Mensaje</h4>
+<ul class="list-group">
+    @foreach (Empleado emp in Model)
+    {
+        <li class="list-group-item list-group-item-secondary">
+            @emp.Apellido
+            <a asp-controller="Empleado" asp-action="SessionEmpleados" asp-route-idEmpleado="@emp.EmpNo" class="btn btn-outline-success">Almacenar empleado</a>
+        </li>
+    }
+</ul>

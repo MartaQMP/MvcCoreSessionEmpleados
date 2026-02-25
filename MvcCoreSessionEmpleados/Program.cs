@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using MvcCoreSessionEmpleados.Data;
+using MvcCoreSessionEmpleados.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<RepositoryEmpleados>();
+string connection = builder.Configuration.GetConnectionString("SqlHospital");
+builder.Services.AddDbContext<HospitalContext>(options => options.UseSqlServer(connection));
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -15,14 +24,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Empleado}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

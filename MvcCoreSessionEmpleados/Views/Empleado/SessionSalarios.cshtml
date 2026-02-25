@@ -1,0 +1,24 @@
+﻿@section style{
+    <style>
+        a{
+            color:black;
+            
+        }
+    </style>
+}
+@model List<Empleado>
+
+<h1>Session salarios Empleados</h1>
+<hr />
+<a asp-controller="Empleado" asp-action="SumaSalarial" class="btn btn-outline-dark">Mostrar suma salarial</a>
+<br />
+<h4>@ViewBag.Mensaje</h4>
+<ul class="list-group">
+    @foreach (Empleado emp in Model)
+    {
+        <li class="list-group-item list-group-item-secondary">
+            @emp.Apellido
+            <a asp-controller="Empleado" asp-action="SessionSalarios" asp-route-salario="@emp.Salario" class="btn btn-outline-success">Almacenar salario</a>
+        </li>            
+    }
+</ul>

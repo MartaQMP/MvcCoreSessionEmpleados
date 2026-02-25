@@ -1,0 +1,22 @@
+﻿@section style{
+    <style>
+        p{
+            text-align:center;
+        }
+        h3{
+            text-align: center;
+        }
+    </style>
+}
+<h1>Suma salarial session</h1>
+<hr />
+<p><a asp-controller="Empleado" asp-action="SessionSalarios" class="btn btn-outline-dark">Volver a salarios empleados</a></p>
+
+@if(Context.Session.GetString("SUMASALARIAL") != null)
+{
+    <h3>Suma salarial: <span>@Context.Session.GetString("SUMASALARIAL")</span></h3>
+}
+else
+{
+    <h3>No tiene salarios almacenados en Session</h3>
+}
