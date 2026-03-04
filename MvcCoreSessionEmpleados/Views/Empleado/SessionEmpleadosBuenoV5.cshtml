@@ -1,0 +1,74 @@
+﻿@section style {
+    <style>
+        a {
+            color: black;
+        }
+    </style>
+}
+@model List<Empleado>
+@{
+    // NECESITAMOS SESSION EN LA VISTA PARA COMPROBAR SUS DATOS
+    List<int> ids = Context.Session.GetObject<List<int>>("EMPLEADOSBUENOSV5");
+    List<Empleado> empleados = memory.Get<List<Empleado>>("FAVORITOS");
+}
+
+<h1>Session lista Empleados Buenos V5</h1>
+<hr />
+@if(ids != null)
+{
+    <h4>Empleados Session: @ids.Count</h4>
+}
+<hr />
+@if(empleados != null)
+{
+    <h4>Empleados Favoritos: @empleados.Count</h4>
+}else
+{
+    <h4>Empleados favoritos: 0</h4>
+}
+<hr />
+<a asp-controller="Empleado" asp-action="EmpleadosAlmacenadosBuenoV5" class="btn btn-outline-dark">Mostrar empleados almacenados</a>
+<a asp-controller="Empleado" asp-action="EmpleadosFavoritos" class="btn btn-outline-dark">Mostrar empleados favoritos</a>
+<br />
+<h4>@ViewBag.Mensaje</h4>
+<ul class="list-group">
+    @foreach (Empleado emp in Model)
+    {
+        <li class="list-group-item list-group-item-secondary">
+            @emp.Apellido
+            <a  asp-controller="Empleado"
+               asp-action="SessionEmpleadosBuenoV5"
+                asp-route-idFavorito="@emp.EmpNo"
+                class="btn btn-outline-secondary">
+                Favorito
+            </a>
+            @* PREGUNTAMOS SI EXISTE EL EMPLEADO SESSION *@
+            @if(ids == null)
+            {
+                <a  asp-controller="Empleado" 
+                    asp-action="SessionEmpleadosBuenoV5" 
+                    asp-route-idEmpleado="@emp.EmpNo" 
+                    class="btn btn-outline-success">Almacenar empleado
+                </a>
+            }
+            else
+            {
+                // BUSCAMOS SI EL EMPLEADO Q ESTAMOS RECORRIENDO ESTA EN LA LISTA
+                if (ids.Contains(emp.EmpNo))
+                {
+                    <img src="~/images/check.png" style="width: 40px" />
+                }
+                else
+                {
+                    <a asp-controller="Empleado"
+                       asp-action="SessionEmpleadosBuenoV5"
+                       asp-route-idEmpleado="@emp.EmpNo"
+                       class="btn btn-outline-success">
+                        Almacenar empleado
+                    </a>
+                }
+            }
+        </li>
+
+    }
+</ul>

@@ -1,0 +1,65 @@
+﻿@model List<Empleado>
+
+@section style {
+    <style>
+        table {
+            width: 70%;
+            margin: auto;
+            text-align: center
+        }
+
+        h4 {
+            text-align: center
+        }
+
+        p {
+            text-align: center
+        }
+    </style>
+}
+
+
+<h1>Empleados Almacenados Bueno V5</h1>
+<hr />
+<p><a asp-controller="Empleado" asp-action="SessionEmpleadosBuenoV5" class="btn btn-outline-dark">Volver a empleados</a></p>
+<hr />
+@if (Context.Session.GetObject<List<int>>("EMPLEADOSBUENOSV5") == null)
+{
+    <h4>No hay empleados en Session</h4>
+}
+<hr />
+@if (Model != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id Empleado</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Numero Departamento</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.EmpNo</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Oficio</td>
+                    <td>@item.Salario</td>
+                    <td>@item.DeptNo</td>
+                    <td>
+                        <a asp-controller="Empleado"
+                           asp-action="EmpleadosAlmacenadosBuenoV5"
+                           asp-route-idEliminar="@item.EmpNo"
+                           class="btn btn-outline-danger">
+                           Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

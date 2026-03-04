@@ -6,11 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// CACHE
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+// REPOSITORIES/CONTEXT
 builder.Services.AddTransient<RepositoryEmpleados>();
 string connection = builder.Configuration.GetConnectionString("SqlHospital");
 builder.Services.AddDbContext<HospitalContext>(options => options.UseSqlServer(connection));
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+
 
 var app = builder.Build();
 

@@ -1,0 +1,57 @@
+﻿@model List<Empleado>
+@section style {
+    <style>
+        table {
+            width: 70%;
+            margin: auto;
+            text-align: center
+        }
+
+        h4 {
+            text-align: center
+        }
+
+        p {
+            text-align: center
+        }
+    </style>
+}
+@{
+    List<Empleado> favoritos = memory.Get<List<Empleado>>("FAVORITOS");
+}
+<h1>Empleados Favoritos Bueno V5</h1>
+<hr />
+<p><a asp-controller="Empleado" asp-action="SessionEmpleadosBuenoV5" class="btn btn-outline-dark">Volver a empleados</a></p>
+<hr />
+<p>@ViewBag.Mensaje</p>
+<hr />
+@if (favoritos == null)
+{
+    <h3> No tenemos empleados favoritos</h3>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id Empleado</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Numero Departamento</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in favoritos)
+            {
+                <tr>
+                    <td>@item.EmpNo</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Oficio</td>
+                    <td>@item.Salario</td>
+                    <td>@item.DeptNo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
