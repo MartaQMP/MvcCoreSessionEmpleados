@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using MvcCoreSessionEmpleados.Extensions;
 using MvcCoreSessionEmpleados.Models;
 using MvcCoreSessionEmpleados.Repositories;
+using System.Threading.Tasks;
 
 namespace MvcCoreSessionEmpleados.Controllers
 {
@@ -210,18 +211,24 @@ namespace MvcCoreSessionEmpleados.Controllers
             return View(empleados);
         }
 
-        public IActionResult EmpleadosFavoritos()
+        public async Task<IActionResult> EmpleadosFavoritos(int? idEliminar)
         {
-            if (this.memory.Get("FAVORITOS") == null)
-            {
-                ViewBag.Mensaje = "No tenemos empleados favoritos";
-                return View();
-            }
-            else
+            if (idEliminar != null)
             {
                 List<Empleado> favoritos = this.memory.Get<List<Empleado>>("FAVORITOS");
-                return View(favoritos);
+                // BUSCAMOS AL EMPLEADO PARA ELIMINAR POR SU ID
+                Empleado emp = favoritos.Find(e => e.EmpNo == idEliminar.Value);
+                favoritos.Remove(emp);
+                if (favoritos.Count == 0)
+                {
+                    this.memory.Remove("FAVORITOS");
+                }
+                else
+                {
+                    this.memory.Set("FAVORITOS", favoritos);
+                }
             }
+            return View();
         }
 
         public async Task<IActionResult> EmpleadosAlmacenadosBuenoV5(int? idEliminar)

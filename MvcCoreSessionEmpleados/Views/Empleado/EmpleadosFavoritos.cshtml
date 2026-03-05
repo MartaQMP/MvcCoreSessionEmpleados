@@ -1,5 +1,4 @@
-﻿@model List<Empleado>
-@section style {
+﻿@section style {
     <style>
         table {
             width: 70%;
@@ -39,6 +38,7 @@ else
                 <th>Oficio</th>
                 <th>Salario</th>
                 <th>Numero Departamento</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -50,6 +50,14 @@ else
                     <td>@item.Oficio</td>
                     <td>@item.Salario</td>
                     <td>@item.DeptNo</td>
+                    <td>
+                        <a  asp-controller="Empleado"
+                            asp-action="EmpleadosFavoritos"
+                            asp-route-idEliminar="@item.EmpNo"
+                            class="btn btn-outline-danger">
+                            Eliminar
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>

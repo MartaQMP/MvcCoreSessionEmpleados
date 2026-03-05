@@ -1,15 +1,15 @@
-﻿@section style {
+﻿@model List<Empleado>
+@section style {
     <style>
         a {
             color: black;
         }
     </style>
 }
-@model List<Empleado>
 @{
     // NECESITAMOS SESSION EN LA VISTA PARA COMPROBAR SUS DATOS
     List<int> ids = Context.Session.GetObject<List<int>>("EMPLEADOSBUENOSV5");
-    List<Empleado> empleados = memory.Get<List<Empleado>>("FAVORITOS");
+    List<Empleado> favoritos = memory.Get<List<Empleado>>("FAVORITOS");
 }
 
 <h1>Session lista Empleados Buenos V5</h1>
@@ -19,9 +19,9 @@
     <h4>Empleados Session: @ids.Count</h4>
 }
 <hr />
-@if(empleados != null)
+@if(favoritos != null)
 {
-    <h4>Empleados Favoritos: @empleados.Count</h4>
+    <h4>Empleados Favoritos: @favoritos.Count</h4>
 }else
 {
     <h4>Empleados favoritos: 0</h4>
@@ -36,12 +36,34 @@
     {
         <li class="list-group-item list-group-item-secondary">
             @emp.Apellido
-            <a  asp-controller="Empleado"
-               asp-action="SessionEmpleadosBuenoV5"
+            @if (favoritos == null)
+            {
+                <a  asp-controller="Empleado"
+                asp-action="SessionEmpleadosBuenoV5"
                 asp-route-idFavorito="@emp.EmpNo"
                 class="btn btn-outline-secondary">
-                Favorito
-            </a>
+                    Favorito
+                </a>
+            }
+            else
+            {
+                /* DEBEMOS PREGUNTAR SI EXISTE EL EMPLEADO CON EL ID QUE TENEMOS ALMACENADO
+                *  BUSCAMOS */
+                Empleado empleadoFavorito = favoritos.Find(e => e.EmpNo == @emp.EmpNo);
+                if (empleadoFavorito == null)
+                {
+                    <a asp-controller="Empleado"
+                       asp-action="SessionEmpleadosBuenoV5"
+                       asp-route-idFavorito="@emp.EmpNo"
+                       class="btn btn-outline-secondary">
+                        Favorito
+                    </a>
+                }
+                else
+                {
+                    <img src="~/images/hulk.png" style="width: 45px" />
+                }
+            }
             @* PREGUNTAMOS SI EXISTE EL EMPLEADO SESSION *@
             @if(ids == null)
             {
